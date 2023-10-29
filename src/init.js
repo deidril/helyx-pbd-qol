@@ -7,7 +7,7 @@ class GridNumbersLayer extends CanvasLayer {
     this.showNumbers = false;
     this.numbersGridContainer = null;
 
-	this.offsetX = 27;
+	this.offsetX = 6;
 	this.offsetY = 9;
 
     Hooks.on('updateScene', () => {
@@ -89,7 +89,7 @@ class GridNumbersLayer extends CanvasLayer {
           if((R == 0) && (C>0))
           { orderNumber = String.fromCharCode("A".charCodeAt(0) + (C-1)); }
           if((C == 0) && (R>0))
-          { orderNumber = String.fromCharCode("1".charCodeAt(0) + (R-1)); }
+          { orderNumber = "" + R; }
 	
       const text = new PIXI.BitmapText(orderNumber, { fontName: 'GridFont', fontSize: size });
       const [xP, yP] = gridLayer.grid.getPixelsFromGridPosition(row, col);
