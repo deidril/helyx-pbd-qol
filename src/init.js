@@ -1,18 +1,28 @@
-class GridNumbersLayer extends CanvasLayer {
-
+class GridNumbersLayer extends CanvasLayer 
+{
    
 
-  constructor() {
+  constructor() 
+  {
     super();
     this.showNumbers = false;
     this.numbersGridContainer = null;
 
-	this.offsetX = 6;
-	this.offsetY = 9;
+	  this.offsetX = 6;
+	  this.offsetY = 9;
 
     Hooks.on('updateScene', () => {
       this.numbersGridContainer = null;
     })
+  }
+
+  retrieveOffsets()
+  {
+    let offsets = game.scenes.current.getFlag('helyx-pbd-qol','offsets');
+    if (offsets == undefined) offsets = { x: 6, y: 9} 
+  
+    this.offsetX = offsets.x;
+    this.offsetY = offsets.y;
   }
 
   /**
@@ -123,11 +133,21 @@ class GridNumbersLayer extends CanvasLayer {
 
   setShowNumbers(status) {
     this.showNumbers = status;
+    if(this.showNumbers) this.retrieveOffsets();
     this._draw();
   }
 
   toggleShowNumbers() {
     this.setShowNumbers(!this.showNumbers)
+  }
+
+  moveGrid(x, y)
+  {
+    if(this.showNumbers == false) return;
+    this.offsetX += x;
+    this.offsetY += y;
+    game.scenes.current.setFlag('helyx-pbd-qol','offsets', {x: this.offsetX, y : this.offsetY});
+    this._draw();
   }
 
   addGrid() {
@@ -192,7 +212,8 @@ class GridNumbersLayer extends CanvasLayer {
 Hooks.on("init", function () {
   PIXI.BitmapFont.from("GridFont", { ...CONFIG.canvasTextStyle, fontFamily: 'Arial' }, { chars: PIXI.BitmapFont.ALPHANUMERIC });
   CONFIG.Canvas.layers.gridNumbers = { layerClass: GridNumbersLayer, group: "primary" };
-  game.keybindings.register("grid-numbers", "showGridNumbers", {
+  game.keybindings.register("grid-numbers", "showGridNumbers", 
+  {
     name: "Toggle grid numbers",
     hint: "Shows a number of each cell on a grid",
     editable: [{ key: "KeyN" }],
@@ -202,5 +223,57 @@ Hooks.on("init", function () {
     },
     restricted: false,
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
-  })
+  });
+
+  game.keybindings.register("grid-numbers", "moveGridUp", 
+  {
+    name: "Move grid up",
+    hint: "Move grid Up",
+    editable: [{ key: "KeyW" }],
+    onDown: () => {
+      const gridCanvasLayer = canvas.layers.find((layer) => layer.name === "GridNumbersLayer")
+      gridCanvasLayer.moveGrid(0, -1);
+    },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+
+    game.keybindings.register("grid-numbers", "moveGridDown", 
+  {
+    name: "Move grid down",
+    hint: "Move grid down",
+    editable: [{ key: "KeyS" }],
+    onDown: () => {
+      const gridCanvasLayer = canvas.layers.find((layer) => layer.name === "GridNumbersLayer")
+      gridCanvasLayer.moveGrid(0, 1);
+    },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+
+      game.keybindings.register("grid-numbers", "moveGridWest", 
+  {
+    name: "Move grid west",
+    hint: "Move grid west",
+    editable: [{ key: "KeyA" }],
+    onDown: () => {
+      const gridCanvasLayer = canvas.layers.find((layer) => layer.name === "GridNumbersLayer")
+      gridCanvasLayer.moveGrid(-1, 0);
+    },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+
+      game.keybindings.register("grid-numbers", "moveGridEast", 
+  {
+    name: "Move grid east",
+    hint: "Move grid east",
+    editable: [{ key: "KeyD" }],
+    onDown: () => {
+      const gridCanvasLayer = canvas.layers.find((layer) => layer.name === "GridNumbersLayer")
+      gridCanvasLayer.moveGrid(1, 0);
+    },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
 })
