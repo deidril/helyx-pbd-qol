@@ -1,41 +1,71 @@
 export class HelyxGridLayer extends CanvasLayer 
 {
    
+    /****************************************************************************/
+    /** \name   Private data members
+    **/ /** @{ ******************************************************************/
+
     /**
         @brief      IF true, display the grid
         @type {boolean}
-   **/
-   #display = false;  
+    **/
+    #display = false;  
 
-  constructor() 
-  {
-    super();
-    this.#display = false;
-    this.numbersGridContainer = null;
+    /**
 
-	  this.offsetX = 6;
-	  this.offsetY = 9;
+        @brief      Horizontal case offset to use to position case (0,0) of the grid
+        @type {Number}
 
-    Hooks.on('updateScene', () => {
-      //this.numbersGridContainer = null;
-    })
-  }
+    **/
+    #offset_x = 6;
 
-  retrieveOffsets()
-  {
-    let offsets = game.scenes.current.getFlag('helyx-pbd-qol','offsets');
-    if (offsets == undefined) offsets = { x: 6, y: 9} 
+    /**
+
+        @brief      Vertical case offset to use to position case (0,0) of the grid
+        @type {Number}
+
+    **/
+    #offset_y = 6;
+
+    /**
+        @brief      Container of drawn elements
+        @type {PIXI.Container}
+
+    **/
+    #drawn_elements = null;
+
+    /** @} **/ /*****************************************************************/
+    /** \name   Constructors
+    **/ /** @{ ******************************************************************/
+
+    constructor() 
+    {
+        super();
+
+        this.#display = false;
+        this.#drawn_elements = null;
+	    this.#offset_x = 6;
+	    this.#offset_y = 9;
+    }
+
+    /** @} **/ /*****************************************************************/
+    /** \name   Public Methods
+    **/ /** @{ ******************************************************************/
+
+    /**
+        @brief          Retrieve the (x,y) offsets from the scene flags
+    **/
+    retrieve_offsets()
+    {
+        let offsets = game.scenes.current.getFlag('helyx-pbd-qol','offsets');
+        if (offsets == undefined) 
+        { offsets = { x: 6, y: 9} } 
   
-    this.offsetX = offsets.x;
-    this.offsetY = offsets.y;
-  }
+        this.#offset_x = offsets.x;
+        this.#offset_y = offsets.y;
+    }
 
 
-  /**
-   * Cached container with numbers
-   * @type {PIXI.Container}
-  */
-  numbersGridContainer;
 
   /**
    * Cached container with numbers
@@ -133,7 +163,7 @@ export class HelyxGridLayer extends CanvasLayer
 
   set_display(status) {
     this.#display = status;
-    if(this.#display) this.retrieveOffsets();
+    if(this.#display) this.retrieve_offsets();
     this._draw();
   }
 
@@ -144,14 +174,14 @@ export class HelyxGridLayer extends CanvasLayer
   moveGrid(x, y)
   {
     if(this.#display == false) return;
-    this.offsetX += x;
-    this.offsetY += y;
-    game.scenes.current.setFlag('helyx-pbd-qol','offsets', {x: this.offsetX, y : this.offsetY});
+    this.#offset_x += x;
+    this.#offset_y += y;
+    game.scenes.current.setFlag('helyx-pbd-qol','offsets', {x: this.#offset_x, y : this.#offset_y});
     this._draw();
   }
 
   addGrid() {
-    this.addChild(this.numbersGridContainer)
+    this.addChild(this.#drawn_elements)
   }
   removeGrid() {
     this.children = [];
@@ -165,15 +195,15 @@ export class HelyxGridLayer extends CanvasLayer
   async _draw() 
   {
     if(!this.#display) {
-      if(this.numbersGridContainer) {
+      if(this.#drawn_elements) {
         this.removeGrid();
       }
     }
     if(this.#display) {
-      if(this.numbersGridContainer) {
+      if(this.#drawn_elements) {
         this.removeGrid();
       } 
-      this.numbersGridContainer = this.getGridNumbersContainer(this.offsetX, this.offsetY);
+      this.#drawn_elements = this.getGridNumbersContainer(this.#offset_x, this.#offset_y);
       this.addGrid();
     }
     return this;
@@ -183,7 +213,7 @@ export class HelyxGridLayer extends CanvasLayer
   /** @override */
   async tearDown() {
     await super.tearDown();
-    this.numbersGridContainer = null;
+    this.#drawn_elements = null;
     /**
     * FIXME:
     * Now we have a problem where GridNumbers layer can't
