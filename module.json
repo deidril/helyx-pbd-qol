@@ -9,7 +9,5 @@
   "version": "2.00",
   "compatibility": { "minimum": "11", "verified": "11", "maximum": "11" },
 
-  "scripts": [
-    "src/init.js"
-  ]
+  "esmodules": [ "src/init.js" ]
 }
