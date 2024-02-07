@@ -1,11 +1,16 @@
 export class HelyxGridLayer extends CanvasLayer 
 {
    
+    /**
+        @brief      IF true, display the grid
+        @type {boolean}
+   **/
+   #display = false;  
 
   constructor() 
   {
     super();
-    this.showNumbers = false;
+    this.#display = false;
     this.numbersGridContainer = null;
 
 	  this.offsetX = 6;
@@ -25,11 +30,6 @@ export class HelyxGridLayer extends CanvasLayer
     this.offsetY = offsets.y;
   }
 
-  /**
-   * Weather to show numbers
-   * @type {boolean}
-  */
-  showNumbers;
 
   /**
    * Cached container with numbers
@@ -131,19 +131,19 @@ export class HelyxGridLayer extends CanvasLayer
     return textContainer;
   }
 
-  setShowNumbers(status) {
-    this.showNumbers = status;
-    if(this.showNumbers) this.retrieveOffsets();
+  set_display(status) {
+    this.#display = status;
+    if(this.#display) this.retrieveOffsets();
     this._draw();
   }
 
-  toggleShowNumbers() {
-    this.setShowNumbers(!this.showNumbers)
+  toggle_display() {
+    this.set_display(!this.#display)
   }
 
   moveGrid(x, y)
   {
-    if(this.showNumbers == false) return;
+    if(this.#display == false) return;
     this.offsetX += x;
     this.offsetY += y;
     game.scenes.current.setFlag('helyx-pbd-qol','offsets', {x: this.offsetX, y : this.offsetY});
@@ -164,12 +164,12 @@ export class HelyxGridLayer extends CanvasLayer
   /** @override */
   async _draw() 
   {
-    if(!this.showNumbers) {
+    if(!this.#display) {
       if(this.numbersGridContainer) {
         this.removeGrid();
       }
     }
-    if(this.showNumbers) {
+    if(this.#display) {
       if(this.numbersGridContainer) {
         this.removeGrid();
       } 
@@ -193,7 +193,7 @@ export class HelyxGridLayer extends CanvasLayer
     * This shold not happen frequently so its fine for now. 
     * But should be fixed in future
     **/
-    this.showNumbers = false;
+    this.#display = false;
     return this;
   }
 

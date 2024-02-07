@@ -10,7 +10,7 @@ Hooks.on("init", function () {
     editable: [{ key: "KeyN" }],
     onDown: () => {
       const gridCanvasLayer = canvas.layers.find((layer) => layer.name === "HelyxGridLayer")
-      gridCanvasLayer.toggleShowNumbers();
+      gridCanvasLayer.toggle_display();
     },
     restricted: false,
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
