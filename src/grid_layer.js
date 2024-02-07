@@ -12,7 +12,7 @@ export class HelyxGridLayer extends CanvasLayer
 	  this.offsetY = 9;
 
     Hooks.on('updateScene', () => {
-      this.numbersGridContainer = null;
+      //this.numbersGridContainer = null;
     })
   }
 
@@ -154,7 +154,7 @@ export class HelyxGridLayer extends CanvasLayer
     this.addChild(this.numbersGridContainer)
   }
   removeGrid() {
-    this.removeChild(this.numbersGridContainer)
+    this.children = [];
   }
 
   draw() {
@@ -162,7 +162,8 @@ export class HelyxGridLayer extends CanvasLayer
   }
 
   /** @override */
-  async _draw() {
+  async _draw() 
+  {
     if(!this.showNumbers) {
       if(this.numbersGridContainer) {
         this.removeGrid();
