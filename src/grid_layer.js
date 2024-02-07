@@ -49,6 +49,21 @@ export class HelyxGridLayer extends CanvasLayer
     }
 
     /** @} **/ /*****************************************************************/
+    /** \name   Private Methods
+    **/ /** @{ ******************************************************************/
+
+    /** @} **/ /*****************************************************************/
+    /** \name   Getters / Setters
+    **/ /** @{ ******************************************************************/
+
+    /**
+   
+        @brief Cached container with numbers
+        @return {GridLayer}
+    **/
+    grid_layer() { return canvas.grid; }
+
+    /** @} **/ /*****************************************************************/
     /** \name   Public Methods
     **/ /** @{ ******************************************************************/
 
@@ -67,13 +82,7 @@ export class HelyxGridLayer extends CanvasLayer
 
 
 
-  /**
-   * Cached container with numbers
-   * @return {GridLayer}
-  */
-  getGridLayer() {
-    return canvas.grid;
-  }
+
 
   /**
    * Get container with drawn numbers
@@ -81,7 +90,7 @@ export class HelyxGridLayer extends CanvasLayer
   */
   getGridNumbersContainer(offsetX, offsetY) {
     const textContainer = new PIXI.Container({ name: "grid-numbers" });
-    const gridLayer = this.getGridLayer();
+    const gridLayer = this.grid_layer();
 
     // Nothing to draw if there is no grid layer.
     if (!gridLayer?.grid) return;
