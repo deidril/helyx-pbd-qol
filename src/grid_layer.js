@@ -150,9 +150,9 @@ export class HelyxGridLayer extends CanvasLayer
 
     const addHexCell = (row, col) => {
       const text = getTextWithCoords(row, col);
-      text.x += cellW / 2 - text.width / 2;
-      text.y += cellH / 2 - text.height / 2 - cellH / 4;
-      textContainer.addChild(text);
+      if(text == undefined) return;
+      text.x += size - text.width;
+      textContainer.addChild(text)
     }
 
     const addSquareCell = (row, col) => {
