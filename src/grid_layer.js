@@ -117,7 +117,8 @@ export class HelyxGridLayer extends CanvasLayer
     const isHorizontalHex = isHexGrid && [2, 3].includes(gridType);
     const isVerticalHex = isHexGrid && [4, 5].includes(gridType);;
 
-    const { size, width, height } = gridLayer.grid.options.dimensions;
+    let dims = canvas.scene.dimensions;
+    const size = dims.size, width = dims.width, height = dims.height ;
     const cellW = gridLayer.grid.w;
     const cellH = gridLayer.grid.h;
     const rowHeight = isHorizontalHex ? cellH * HEX_ROW_SIZE_MULTIPLIER : cellH;
