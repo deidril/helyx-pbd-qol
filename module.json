@@ -6,8 +6,13 @@
   [ 
       { "name": "Deidril", "url": "https://github.com/deidril", "flags": {} }
   ],
-  "version": "2.00",
+  "version": "13.2",
   "compatibility": { "minimum": "13", "verified": "13", "maximum": "13" },
 
-  "esmodules": [ "src/init.js" ]
+  "esmodules": [ "src/init.js" ],
+
+  "url": "https://github.com/deidril/helyx-pbd-qol",
+  "manifest": "https://github.com/deidril/helyx-pbd-qol/releases/download/13.2/module.json",
+  "download": "https://github.com/deidril/helyx-pbd-qol/releases/download/13.2/helyx-pbd-qol-13.2.zip"
+
 }
