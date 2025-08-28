@@ -7,7 +7,7 @@
       { "name": "Deidril", "url": "https://github.com/deidril", "flags": {} }
   ],
   "version": "2.00",
-  "compatibility": { "minimum": "11", "verified": "11", "maximum": "11" },
+  "compatibility": { "minimum": "13", "verified": "13", "maximum": "13" },
 
   "esmodules": [ "src/init.js" ]
 }
